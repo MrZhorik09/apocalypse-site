@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.claude/
+node_modules/
+
+# assets/js/vendor/ НЕ игнорируем: SDK должен попасть в репозиторий,
+# иначе Discord Activity не запустится на GitHub Pages.
+# Но браузеру нужны только ESM-модули — CommonJS и типы в репозиторий не кладём.
+assets/js/vendor/**/*.cjs
+assets/js/vendor/**/*.d.ts
+assets/js/vendor/**/*.map

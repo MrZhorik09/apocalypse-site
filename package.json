@@ -1,0 +1,14 @@
+{
+  "name": "apocalypse-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Сайт сообщества Project: Apocalypse — статика для GitHub Pages + панель Discord Activity",
+  "scripts": {
+    "status": "python scripts/fetch_status.py",
+    "serve": "python -m http.server 4173",
+    "vendor-sdk": "node -e \"require('fs').cpSync('node_modules/@discord/embedded-app-sdk/output','assets/js/vendor/embedded-app-sdk',{recursive:true});console.log('SDK скопирован в assets/js/vendor/embedded-app-sdk')\""
+  },
+  "dependencies": {
+    "@discord/embedded-app-sdk": "^2.5.0"
+  }
+}

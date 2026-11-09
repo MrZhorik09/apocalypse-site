@@ -1,0 +1,41 @@
+name: Обновить статус серверов
+
+on:
+  schedule:
+    # Каждые 10 минут. GitHub может задержать запуск при высокой нагрузке.
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: server-status
+  cancel-in-progress: false
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Опросить серверы
+        env:
+          SCPSL_API_KEY: ${{ secrets.SCPSL_API_KEY }}
+        run: python scripts/fetch_status.py
+
+      - name: Закоммитить, если что-то изменилось
+        run: |
+          if git diff --quiet -- data/status.json; then
+            echo "статус не изменился, коммит не нужен"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/status.json
+          git commit -m "chore: обновление статуса серверов"
+          git push
